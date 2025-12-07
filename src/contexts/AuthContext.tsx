@@ -52,10 +52,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return { error };
   };
 
-  const signOut = async () => {
-    await supabase.auth.signOut();
+const signOut = async () => {
+  const { error } = await supabase.auth.signOut();
+
+  if (error) {
+    console.error("Error signing out:", error);
+    return;
+  }
+
+  // Wait a moment so session clears properly
+  setTimeout(() => {
     window.location.href = '/auth';
-  };
+  }, 50);
+};
+
 
   return (
     <AuthContext.Provider value={{ user, session, loading, signUp, signIn, signOut }}>
