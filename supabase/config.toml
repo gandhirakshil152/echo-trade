@@ -1,0 +1,10 @@
+project_id = "dcqrusrwmdhptscnnjis"
+
+[functions.stock-quote]
+verify_jwt = false
+
+[functions.stock-history]
+verify_jwt = false
+
+[functions.admin-users]
+verify_jwt = true
