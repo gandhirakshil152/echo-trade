@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -20,6 +20,7 @@ interface TradeDialogProps {
   maxQuantity?: number;
   balance?: number;
   onConfirm: (quantity: number) => void;
+  initialQuantity?: number;   // ✅ NEW prop for voice‑parsed quantity
 }
 
 export const TradeDialog: React.FC<TradeDialogProps> = ({
@@ -30,9 +31,18 @@ export const TradeDialog: React.FC<TradeDialogProps> = ({
   tradeType,
   maxQuantity,
   balance,
-  onConfirm
+  onConfirm,
+  initialQuantity = 1   // ✅ default to 1 if not provided
 }) => {
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState(initialQuantity);
+
+  // Reset quantity when dialog opens
+  useEffect(() => {
+    if (open) {
+      setQuantity(initialQuantity || 1);
+    }
+  }, [open, initialQuantity]);
+
   const totalAmount = quantity * price;
   const canAfford = tradeType === 'BUY' ? (balance || 0) >= totalAmount : true;
   const hasShares = tradeType === 'SELL' ? (maxQuantity || 0) >= quantity : true;
@@ -52,8 +62,10 @@ export const TradeDialog: React.FC<TradeDialogProps> = ({
           <DialogTitle className="font-mono">
             {tradeType} {symbol}
           </DialogTitle>
-        <DialogDescription>
-            Current price: <span className="font-mono font-bold text-primary">₹{price.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+          <DialogDescription>
+            Current price: <span className="font-mono font-bold text-primary">
+              ₹{price.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            </span>
           </DialogDescription>
         </DialogHeader>
 
@@ -74,7 +86,9 @@ export const TradeDialog: React.FC<TradeDialogProps> = ({
           <div className="bg-secondary/50 rounded-lg p-4 space-y-2">
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Price per share</span>
-              <span className="font-mono">₹{price.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+              <span className="font-mono">
+                ₹{price.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </span>
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Quantity</span>
@@ -82,13 +96,17 @@ export const TradeDialog: React.FC<TradeDialogProps> = ({
             </div>
             <div className="border-t border-border pt-2 flex justify-between">
               <span className="font-medium">Total</span>
-              <span className="font-mono font-bold text-primary">₹{totalAmount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+              <span className="font-mono font-bold text-primary">
+                ₹{totalAmount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </span>
             </div>
           </div>
 
           {tradeType === 'BUY' && (
             <p className="text-sm text-muted-foreground">
-              Available balance: <span className="font-mono text-foreground">₹{balance?.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+              Available balance: <span className="font-mono text-foreground">
+                ₹{balance?.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </span>
             </p>
           )}
           {tradeType === 'SELL' && (
