@@ -27,26 +27,26 @@ export const useVoiceCommands = () => {
 
   const parseCommand = useCallback((text: string): VoiceCommandResult => {
     const lowerText = text.toLowerCase().trim();
-    
-    const buyMatch = lowerText.match(/(?:buy|Buy|by)\s+(\d+)\s+(?:shares?\s+of\s+)?([a-z]+)/i);
-    if (buyMatch) {
-      return {
-        command: text,
-        action: 'buy',
-        quantity: parseInt(buyMatch[1]),
-        symbol: buyMatch[2].toUpperCase()
-      };
-    }
+    const buyMatch = lowerText.match(/(?:buy|by)\s+(\d+)?\s*(?:shares?\s+of\s+)?([a-z]+)/i);
+if (buyMatch) {
+  return {
+    command: text,
+    action: 'buy',
+    quantity: buyMatch[1] ? parseInt(buyMatch[1]) : 1, // default to 1
+    symbol: buyMatch[2].toUpperCase()
+  };
+}
 
-    const sellMatch = lowerText.match(/cell\s+(\d+)\s+(?:shares?\s+of\s+)?([a-z]+)/i);
-    if (sellMatch) {
-      return {
-        command: text,
-        action: 'sell',
-        quantity: parseInt(sellMatch[1]),
-        symbol: sellMatch[2].toUpperCase()
-      };
-    }
+const sellMatch = lowerText.match(/(?:sell|cell)\s+(\d+)?\s*(?:shares?\s+of\s+)?([a-z]+)/i);
+if (sellMatch) {
+  return {
+    command: text,
+    action: 'sell',
+    quantity: sellMatch[1] ? parseInt(sellMatch[1]) : 1, // default to 1
+    symbol: sellMatch[2].toUpperCase()
+  };
+}
+
 
     const searchMatch = lowerText.match(/(?:search|quote|get\s+price\s+(?:of|for)?|price\s+of)\s+([a-z]+)/i);
     if (searchMatch) {
