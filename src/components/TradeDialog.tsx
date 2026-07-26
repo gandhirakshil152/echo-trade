@@ -20,7 +20,7 @@ interface TradeDialogProps {
   maxQuantity?: number;
   balance?: number;
   onConfirm: (quantity: number) => void;
-  initialQuantity?: number;   // ✅ NEW prop for voice‑parsed quantity
+  initialQuantity?: number;   // ✅ NEW
 }
 
 export const TradeDialog: React.FC<TradeDialogProps> = ({
@@ -32,7 +32,7 @@ export const TradeDialog: React.FC<TradeDialogProps> = ({
   maxQuantity,
   balance,
   onConfirm,
-  initialQuantity = 1   // ✅ default to 1 if not provided
+  initialQuantity = 1   // ✅ default to 1
 }) => {
   const [quantity, setQuantity] = useState(initialQuantity);
 
