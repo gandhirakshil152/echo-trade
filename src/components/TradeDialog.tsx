@@ -32,11 +32,11 @@ export const TradeDialog: React.FC<TradeDialogProps> = ({
   maxQuantity,
   balance,
   onConfirm,
-  initialQuantity = 1   // ✅ default to 1
+  initialQuantity = 1
 }) => {
   const [quantity, setQuantity] = useState(initialQuantity);
 
-  // Reset quantity when dialog opens
+  // ✅ Sync state with prop whenever dialog opens or initialQuantity changes
   useEffect(() => {
     if (open) {
       setQuantity(initialQuantity || 1);
@@ -51,7 +51,7 @@ export const TradeDialog: React.FC<TradeDialogProps> = ({
     if (quantity > 0 && canAfford && hasShares) {
       onConfirm(quantity);
       onOpenChange(false);
-      setQuantity(1);
+      setQuantity(1); // reset after confirm
     }
   };
 
