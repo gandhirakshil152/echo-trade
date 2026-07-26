@@ -137,5 +137,6 @@ export const TradeDialog: React.FC<TradeDialogProps> = ({
         </DialogFooter>
       </DialogContent>
     </Dialog>
+    
   );
 };
