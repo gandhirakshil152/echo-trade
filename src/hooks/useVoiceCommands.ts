@@ -28,7 +28,7 @@ export const useVoiceCommands = () => {
   const parseCommand = useCallback((text: string): VoiceCommandResult => {
     const lowerText = text.toLowerCase().trim();
     
-    const buyMatch = lowerText.match(/buy\s+(\d+)\s+(?:shares?\s+of\s+)?([a-z]+)/i);
+    const buyMatch = lowerText.match(/(?:buy|Buy|by)\s+(\d+)\s+(?:shares?\s+of\s+)?([a-z]+)/i);
     if (buyMatch) {
       return {
         command: text,
@@ -38,7 +38,7 @@ export const useVoiceCommands = () => {
       };
     }
 
-    const sellMatch = lowerText.match(/sell\s+(\d+)\s+(?:shares?\s+of\s+)?([a-z]+)/i);
+    const sellMatch = lowerText.match(/cell\s+(\d+)\s+(?:shares?\s+of\s+)?([a-z]+)/i);
     if (sellMatch) {
       return {
         command: text,
